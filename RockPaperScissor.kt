@@ -4,22 +4,31 @@ fun main() {
     var computerChoice: String
     var playerChoice: String
     var name: String
-    var playerScore = 0
-    var computerScore = 0
-    val choices = listOf("Rock", "Paper", "Scissors")
 
     print("Enter your name: ")
     name = readln().trim()
 
     while (true) {
-        while (true) {
-            print("Rock, Paper, Scissors? Enter your choice: ")
-            playerChoice = readln().trim().capitalize()
-            if (playerChoice in choices) break
-            println("Invalid choice. Please enter Rock, Paper, or Scissors.")
+        print("Rock, Paper, or Scissors? Enter your choice (or type 'exit' to quit): ")
+        playerChoice = readln().trim()
+
+        if (playerChoice == "exit") {
+            println("Goodbye!")
+            break
         }
 
-        computerChoice = choices.random()
+        if (playerChoice !in listOf("Rock", "Paper", "Scissors")) {
+            println("Invalid choice. Please enter Rock, Paper, or Scissors.")
+            continue
+        }
+
+        val randomNumber = (1..3).random()
+        computerChoice = when (randomNumber) {
+            1 -> "Rock"
+            2 -> "Paper"
+            3 -> "Scissors"
+            else -> throw IllegalStateException("Unexpected value: $randomNumber")
+        }
 
         println("Computer's choice is $computerChoice")
 
@@ -32,26 +41,9 @@ fun main() {
         }
 
         when (winner) {
-            "Tie" -> {
-                println("It's a tie!!")
-            }
-            name -> {
-                println("$name won!!")
-                playerScore++
-            }
-            else -> {
-                println("Computer won!!")
-                computerScore++
-            }
-        }
-
-        println("Score: $name $playerScore - Computer $computerScore")
-
-        print("Do you want to play again? (yes/no): ")
-        val playAgain = readln().trim().lowercase()
-        if (playAgain != "yes") {
-            println("Thanks for playing! Final score: $name $playerScore - Computer $computerScore")
-            break
+            "Tie" -> println("It's a tie!!")
+            name -> println("$name won!!")
+            else -> println("Computer won!!")
         }
     }
 }
